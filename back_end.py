@@ -1,26 +1,19 @@
-from flask import Flask
-from flask import request
+from flask_apscheduler import APScheduler
+from flask import Flask, request, jsonify
 from flask_mail import Mail
-import json
-from send_mail import send_mail
+from config import config
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, login_user, UserMixin, logout_user, login_required
+from flask_login import LoginManager
 import pymysql
+from utli import getData
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = ''
-app.config['SQLALCHEMY_DATABASE_URI'] = ''
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config.from_object(config['local'])
 
-app.config['MAIL_SERVER'] = 'smtp.163.com'
-app.config['MAIL_PORT'] = 25
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = ''
-app.config['MAIL_PASSWORD'] = ''
-app.config['MAIL_DEBUG'] = True
-app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USE_TLS'] = False
+# scheduler = APScheduler()
+# scheduler.init_app(app)
+
 
 db = SQLAlchemy()
 pymysql.install_as_MySQLdb()
@@ -34,9 +27,8 @@ login_manger.init_app(app)
 
 @login_manger.user_loader
 def load_user(user_id):
-    from Users import Users
+    from models.Users import Users
     return Users.query.get(int(user_id))
-
 
 
 def init():
@@ -44,6 +36,18 @@ def init():
     app.register_blueprint(blueprint=auth, url_prefix='/auth')
 
 
+@app.route('/news', methods=['POST'])
+def news():
+    if request.method == 'POST':
+        if request.get_json(force=True)['key'] == 'abc':
+            return jsonify(getData())
+
+
 if __name__ == '__main__':
     init()
-    app.run(threaded=True)
+    # scheduler.start()
+    app.run(threaded=True,
+            debug=True,
+            host='0.0.0.0',
+            port=8001
+            )

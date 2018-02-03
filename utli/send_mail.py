@@ -21,7 +21,7 @@ class SendMailThread(Thread):
 def send_mail(subject, recv, content):
     msg = Message(subject, sender='nyucircles@163.com', recipients=recv)
     msg.body = content
-
+    print('sending!')
     app = current_app._get_current_object()
 
     send = SendMailThread(app, msg)

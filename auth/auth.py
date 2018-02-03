@@ -1,12 +1,10 @@
-from flask import request, Blueprint, redirect, url_for, jsonify
-from back_end import login_manger, db
-from Users import Users
-import json
-from flask_login import LoginManager, login_user, UserMixin, logout_user, login_required
+from flask import request, jsonify
+from back_end import db
+from models.Users import Users
+from auth import auth
+from flask_login import login_user, logout_user, login_required
 
-from send_mail import send_mail
-
-auth = Blueprint('auth', __name__)
+from utli import send_mail
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -16,6 +14,7 @@ def login():
         print(data)
 
         user = Users.query.filter_by(email=data['email']).first()
+
         if user is not None and user.pwd == data['pwd']:
             if not user.is_valid:
                 return jsonify(dict(status=0, type=0))
@@ -44,14 +43,19 @@ def logout():
 def signup():
     if request.method == 'POST':
         data = request.get_json(force=True)
-        user = Users(email=data['email'], pwd=data['pwd'], gender=data['gender'])
-        db.session.add(user)
-        db.session.commit()
-        subject = 'verify from circles'
-        rec = [data['email']]
-        content = '127.0.0.1:5000/auth/verify/' + data['email']
-        send_mail(subject=subject, recv=rec, content=content)
-        return jsonify(dict(end=1))
+
+        q = Users.query.filter_by(email=data['email']).first()
+        if q is not None:
+            user = Users(email=data['email'], pwd=data['pwd'], gender=data['gender'])
+            db.session.add(user)
+            db.session.commit()
+            subject = 'verify from circles'
+            rec = [data['email']]
+            content = 'steins.xin:8001/auth/verify/' + data['email']
+            send_mail(subject=subject, recv=rec, content=content)
+            return jsonify(dict(status=0))
+        else:
+            return jsonify(dict(status=1))
 
 
 @auth.route('/verify/<username>', methods=['GET'])
