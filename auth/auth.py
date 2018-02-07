@@ -16,14 +16,14 @@ def login():
 
         if user is not None and user.pwd == data['pwd']:
             if not user.is_valid:
-                return jsonify(dict(status=0, type=0))
+                return jsonify(dict(status=0, type=0, is_new=-1))
             else:
                 login_user(user)
 
-                user_info = jsonify(dict(status=1, is_new=user.is_new))
+                user_info = jsonify(dict(status=1, is_new=user.is_new, type=-1))
                 return user_info
         else:
-            user_info = jsonify(dict(status=0, type=1))
+            user_info = jsonify(dict(status=0, type=1, is_new=-1))
             return user_info
     else:
         return 'hello'
@@ -52,9 +52,9 @@ def signup():
             rec = [data['email']]
             content = 'steins.xin:8001/auth/verify/' + data['email']
             send_mail(subject=subject, recv=rec, content=content)
-            return jsonify(dict(status=1))
+            return jsonify(dict(status=1, type=-1, is_new=-1))
         else:
-            return jsonify(dict(status=0))
+            return jsonify(dict(status=0, type=1, is_new=-1))
 
 
 @auth.route('/forgetpwd', methods=['POST'])
@@ -68,9 +68,9 @@ def forget_pwd():
             rec = [data['email']]
             content = 'steins.xin:8001/auth/forget/' + data['email']
             send_mail(subject=subject, recv=rec, content=content)
-            return jsonify(dict(status=1))
+            return jsonify(dict(status=1, type=-1, is_new=-1))
         else:
-            return jsonify(dict(status=0))
+            return jsonify(dict(status=0, type=-1, is_new=-1))
 
 
 @auth.route('/verify/<username>', methods=['GET'])
