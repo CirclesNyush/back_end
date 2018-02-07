@@ -4,13 +4,14 @@ from flask_login import LoginManager, login_user, UserMixin, logout_user, login_
 
 
 class Users(UserMixin, db.Model):
-    __tablename__ = 'users'
+    __tablename__ = 'Users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.VARCHAR(64))
     pwd = db.Column(db.VARCHAR(64))
     is_new = db.Column(db.BOOLEAN())
     gender = db.Column(db.BOOLEAN())
     is_valid = db.Column(db.BOOLEAN(), default=False)
+    is_forget = db.Column(db.BOOLEAN(), default=False)
 
     def __init__(self, email, pwd, gender):
         self.email = email
