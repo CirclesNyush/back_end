@@ -51,8 +51,8 @@ def signup():
             db.session.commit()
             subject = 'verify from circles'
             rec = [data['email']]
-            content = {'url': 'steins.xin:8001/auth/forget/' + q.cyphered_email,
-                       'nickname': q.nickname}
+            content = {'url': 'steins.xin:8001/auth/forget/' + user.cyphered_email,
+                       'nickname': user.nickname}
             send_mail(subject=subject, recv=rec, content=content)
             return jsonify(dict(status=1, type=-1, is_new=-1))
         else:
@@ -68,7 +68,7 @@ def forget_pwd():
         if q is not None:
             subject = 'Change your password'
             rec = [data['email']]
-            content = {'url': 'steins.xin:8001/auth/forget/' +  q.cyphered_email,
+            content = {'url': 'steins.xin:8001/auth/forget/' + q.cyphered_email,
                        'nickname': q.nickname}
             send_mail(subject=subject, recv=rec, content=content)
             q.is_forget = True
