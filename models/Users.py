@@ -21,7 +21,7 @@ class Users(UserMixin, db.Model):
         self.email = email
         self.pwd = pwd
         self.nickname = nickname
-        self.cyphered_email = hashlib.md5(email)
+        self.cyphered_email = hashlib.md5(email.encode('utf8')).exdigest()
         self.is_new = True
         self.gender = gender
 
@@ -39,3 +39,5 @@ class Users(UserMixin, db.Model):
 
     def is_anonymous(self):
         return False
+
+
