@@ -8,7 +8,11 @@
 out
 gen
 /__pycache__
-/templates
 /.DS_Store
 .DS_Store
-/static
+
+auth/__pycache__/
+models/__pycache__/
+
+config.py
+utli/__pycache__/

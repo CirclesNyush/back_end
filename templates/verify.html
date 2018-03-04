@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome from Circles</title>
+    <link href="{{ url_for('static', filename='css/styles.css', _external=True) }}">
+</head>
+<body>
+    <div id="content">
+        <h1>Hello, {{ nickname }}</h1>
+        <p>This is email is to notify you that you have registered account from Circles</p>
+        <p>Please click the button below to verify your account</p>
+
+        <p id="button"> <a href="{{ url }}">Click me</a></p>
+    </div>
+</body>
+</html>

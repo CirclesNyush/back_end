@@ -20,7 +20,9 @@ class SendMailThread(Thread):
 
 def send_mail(subject, recv, content):
     msg = Message(subject, sender='nyucircles@163.com', recipients=recv)
-    msg.body = content
+    msg.body = render_template("verify.html",
+                               nickname=content['nickname'],
+                               url=content['url'])
     print('sending!')
     app = current_app._get_current_object()
 

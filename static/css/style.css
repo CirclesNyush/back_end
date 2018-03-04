@@ -1,0 +1,50 @@
+#content {
+    border: .1em grey solid;
+    padding: 10px;
+    padding-top: 30px;
+    max-width: 50%;
+    position: absolute;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 20px;
+    height: 350px;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+}
+
+body {
+    text-align: center;
+}
+
+#button {
+    background-color: hotpink;
+    width: 20%;
+    height: 10%;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: darkgrey .1em .1em .1em;
+
+    margin: auto;
+    position: absolute;
+    top: 20%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    padding-top: 2%;
+
+}
+
+#button a {
+    text-decoration: none;
+
+}
+
+a:link,a:visited {
+    color: white;
+}

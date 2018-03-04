@@ -20,7 +20,7 @@ def login():
             else:
                 login_user(user)
 
-                user_info = jsonify(dict(status=1, is_new=user.is_new, type=-1))
+                user_info = jsonify(dict(status=1, is_new=int(user.is_new), type=-1))
                 return user_info
         else:
             user_info = jsonify(dict(status=0, type=1, is_new=-1))
@@ -42,15 +42,16 @@ def logout():
 def signup():
     if request.method == 'POST':
         data = request.get_json(force=True)
-
+        print(data)
         q = Users.query.filter_by(email=data['email']).first()
+        print(q)
         if q is None:
-            user = Users(email=data['email'], pwd=data['pwd'], gender=data['gender'])
+            user = Users(email=data['email'], pwd=data['pwd'], gender=data['gender'], nickname=data['nickname'])
             db.session.add(user)
             db.session.commit()
             subject = 'verify from circles'
             rec = [data['email']]
-            content = 'steins.xin:8001/auth/verify/' + data['email']
+            content = 'steins.xin:8001/auth/verify/' + user.cyphered_email
             send_mail(subject=subject, recv=rec, content=content)
             return jsonify(dict(status=1, type=-1, is_new=-1))
         else:
@@ -66,8 +67,12 @@ def forget_pwd():
         if q is not None:
             subject = 'Change your password'
             rec = [data['email']]
-            content = 'steins.xin:8001/auth/forget/' + data['email']
+            content = {'url': 'steins.xin:8001/auth/forget/' + data['cyphered_email'],
+                       'nickname': q.nickname}
             send_mail(subject=subject, recv=rec, content=content)
+            q.is_forget = True
+            db.session.add(q)
+            db.session.close()
             return jsonify(dict(status=1, type=-1, is_new=-1))
         else:
             return jsonify(dict(status=0, type=-1, is_new=-1))
@@ -75,7 +80,7 @@ def forget_pwd():
 
 @auth.route('/verify/<username>', methods=['GET'])
 def check(username):
-    user = Users.query.filter_by(email=username).first()
+    user = Users.query.filter_by(cyphered_email=username).first()
     if user is not None:
         if not user.is_valid:
             user.is_valid = True
@@ -93,12 +98,6 @@ def check(username):
 def get_pwd(username):
     user = Users.query.filter_by(email=username).first()
     if user is not None:
-        if not user.is_valid:
-            user.is_valid = True
-            db.session.add(user)
-            db.session.commit()
-            return 'cong! U have activate this email'
-        else:
-            return 'you have done this already'
-    else:
-        return 'please check the link if it is right'
+        if user.is_valid and user.is_forget:
+            return "change"
+        return "wrong"
