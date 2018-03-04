@@ -1,4 +1,3 @@
-from flask_apscheduler import APScheduler
 from flask import Flask, request, jsonify
 from flask_mail import Mail
 from config import config
@@ -33,7 +32,9 @@ def load_user(user_id):
 
 def init():
     from auth import auth
+    from personal import personal
     app.register_blueprint(blueprint=auth, url_prefix='/auth')
+    app.register_blueprint(blueprint=personal, url_prefix='/personal')
 
 
 @app.route('/news', methods=['POST'])
