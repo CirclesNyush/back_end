@@ -51,7 +51,8 @@ def signup():
             db.session.commit()
             subject = 'verify from circles'
             rec = [data['email']]
-            content = 'steins.xin:8001/auth/verify/' + user.cyphered_email
+            content = {'url': 'steins.xin:8001/auth/forget/' + data['cyphered_email'],
+                       'nickname': q.nickname}
             send_mail(subject=subject, recv=rec, content=content)
             return jsonify(dict(status=1, type=-1, is_new=-1))
         else:

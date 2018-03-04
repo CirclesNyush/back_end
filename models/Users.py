@@ -21,7 +21,7 @@ class Users(UserMixin, db.Model):
         self.email = email
         self.pwd = pwd
         self.nickname = nickname
-        self.cyphered_email = hashlib.md5(email.encode('utf8')).exdigest()
+        self.cyphered_email = hashlib.md5(email.encode('utf8')).hexdigest()
         self.is_new = True
         self.gender = gender
 
