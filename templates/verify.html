@@ -3,9 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome from Circles</title>
-    <link href="{{ url_for('static', filename='css/styles.css', _external=True) }}">
+{#    <link href="{{ url_for('static', filename='css/styles.css', _external=True) }}">#}
 </head>
 <body>
+
+    <style>
+        #content {
+            border: .1em grey solid;
+            padding: 10px;
+            padding-top: 30px;
+            max-width: 50%;
+            position: absolute;
+            text-align: center;
+            background-color: #fff;
+            border-radius: 20px;
+            height: 350px;
+            margin: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+        }
+
+        body {
+            text-align: center;
+        }
+
+        #button {
+            background-color: hotpink;
+            width: 20%;
+            height: 10%;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: darkgrey .1em .1em .1em;
+
+            margin: auto;
+            position: absolute;
+            top: 20%;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            padding-top: 2%;
+
+        }
+
+        #button a {
+            text-decoration: none;
+
+        }
+
+        a:link,a:visited {
+            color: white;
+        }
+
+    </style>
     <div id="content">
         <h1>Hello, {{ nickname }}</h1>
         <p>This is email is to notify you that you have registered account from Circles</p>
