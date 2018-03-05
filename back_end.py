@@ -44,6 +44,7 @@ def news():
             return jsonify(getData())
 
 
+
 if __name__ == '__main__':
     init()
     # scheduler.start()
