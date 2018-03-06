@@ -2,7 +2,9 @@ from flask import request, jsonify
 from back_end import db
 from models.Users import Users
 from personal import personal
-from flask_login import logout_user, login_required
+from flask_login import login_required
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileRequired
 
 
 @personal.route('/fetchavatar/', methods=['POST'])
@@ -13,6 +15,9 @@ def get_avatar():
         email = data['email']
         user = Users.query.filter_by(cyphered_email=email).first()
         print(data)
+
+        file = request.files['file']
+        print(file)
         if user is not None:
             return jsonify(dict(status=1, avatar=user.avatar))
         else:
