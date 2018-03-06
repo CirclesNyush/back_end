@@ -25,10 +25,10 @@ def upadte_avatar():
         email = data['email']
         user = Users.query.filter_by(cyphered_email=email).first()
         if user is not None:
-            user.avatar = data['avatar']
+            user.avatar = data['avatar'] #TODO : load avatar locally
             db.session.add(user)
             db.session.close()
-            return jsonify(dict(status=1))
+            return jsonify(dict(status=1, avatar=user.avatar))
         else:
             return jsonify(dict(status=0, avatar=""))
 

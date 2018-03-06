@@ -11,7 +11,7 @@ class Users(UserMixin, db.Model):
     cyphered_email = db.Column(db.VARCHAR(64))
     email = db.Column(db.VARCHAR(64))
     nickname = db.Column(db.VARCHAR(64))
-    phone = db.Column(db.Integer(18))
+    phone = db.Column(db.VARCHAR(18))
 
     pwd = db.Column(db.VARCHAR(64))
     gender = db.Column(db.BOOLEAN())
