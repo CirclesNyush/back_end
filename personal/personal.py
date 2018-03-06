@@ -12,6 +12,7 @@ def get_avatar():
         data = request.get_json(force=True)
         email = data['email']
         user = Users.query.filter_by(cyphered_email=email).first()
+        print(data)
         if user is not None:
             return jsonify(dict(status=1, avatar=user.avatar))
         else:
@@ -47,7 +48,7 @@ def get_info():
 
 
 @personal.route('/updateinfo', methods=['POST'])
-def get_info():
+def update_info():
     if request.method == 'POST':
         data = request.get_json(force=True)
         email = data['email']
