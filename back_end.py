@@ -8,7 +8,7 @@ from utli import getData
 
 app = Flask(__name__)
 
-app.config.from_object(config['local'])
+app.config.from_object(config['development'])
 
 # scheduler = APScheduler()
 # scheduler.init_app(app)

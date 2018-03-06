@@ -7,13 +7,18 @@ import hashlib
 class Users(UserMixin, db.Model):
     __tablename__ = 'Users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    cyphered_email = db.Column(db.VARCHAR(64))
     email = db.Column(db.VARCHAR(64))
     nickname = db.Column(db.VARCHAR(64))
-    cyphered_email = db.Column(db.VARCHAR(64))
+    phone = db.Column(db.Integer(18))
+
     pwd = db.Column(db.VARCHAR(64))
-    is_new = db.Column(db.BOOLEAN())
     gender = db.Column(db.BOOLEAN())
     avatar = db.Column(db.VARCHAR(64))
+    tags = db.Column(db.PickleType)
+
+    is_new = db.Column(db.BOOLEAN())
     is_valid = db.Column(db.BOOLEAN(), default=False)
     is_forget = db.Column(db.BOOLEAN(), default=False)
 
@@ -39,5 +44,3 @@ class Users(UserMixin, db.Model):
 
     def is_anonymous(self):
         return False
-
-
