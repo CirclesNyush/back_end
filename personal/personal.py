@@ -1,39 +1,41 @@
-from flask import request, jsonify
+from flask import request, jsonify, url_for
 from back_end import db
 from models.Users import Users
 from personal import personal
-from flask_login import login_required
-from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileRequired
+import base64
+import os
 
 
-@personal.route('/fetchavatar/', methods=['POST'])
-@login_required
+
+@personal.route('/fetchavatar', methods=['POST'])
 def get_avatar():
     if request.method == 'POST':
         data = request.get_json(force=True)
         email = data['email']
         user = Users.query.filter_by(cyphered_email=email).first()
-        print(data)
-
-        file = request.files['file']
-        print(file)
         if user is not None:
-            return jsonify(dict(status=1, avatar=user.avatar))
+            return send_from_directory('/root/work/back_end/static/pic', email+'.jpg', as_attachment=True)
         else:
             return jsonify(dict(status=0, avatar=""))
 
 
-@personal.route('/updateavatar/', methods=['POST'])
+@personal.route('/updateavatar', methods=['POST'])
 def upadte_avatar():
     if request.method == 'POST':
         data = request.get_json(force=True)
         email = data['email']
         user = Users.query.filter_by(cyphered_email=email).first()
+
+        img = base64.b64decode(data['avatar'])
+        print(len(img))
+        with open("/root/work/back_end/static/pic/" + email + ".ipg", 'wb') as file:
+            file.write(img)
+
         if user is not None:
-            user.avatar = data['avatar'] #TODO : load avatar locally
+            user.avatar = url_for("static", filename="pic/" + email + '.jpg')
+            print(user.avatar)
             db.session.add(user)
-            db.session.close()
+            db.session.commit()
             return jsonify(dict(status=1, avatar=user.avatar))
         else:
             return jsonify(dict(status=0, avatar=""))
@@ -62,5 +64,7 @@ def update_info():
             changes = data['data']
             for key, value in changes.items():
                 user[key] = value
+            db.session.add(user)
+            db.session.commit()
             return jsonify(dict(status=0, data=""))
         return jsonify(dict(status=0, data=""))

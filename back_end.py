@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_mail import Mail
 from config import config
 from flask_sqlalchemy import SQLAlchemy
@@ -42,6 +42,12 @@ def news():
     if request.method == 'POST':
         if request.get_json(force=True)['key'] == 'abc':
             return jsonify(getData())
+
+
+@app.route('/test', methods=["GET"])
+def test():
+    # return app.send_static_file('pic/33a5cbb6a9a0e88b4a6adcb73f6ad025.ipg')
+    return send_from_directory('/root/work/back_end/static/pic', "33a5cbb6a9a0e88b4a6adcb73f6ad025.jpg", as_attachment=True)
 
 
 
