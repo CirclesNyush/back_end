@@ -16,14 +16,14 @@ def login():
 
         if user is not None and user.pwd == data['pwd']:
             if not user.is_valid:
-                return jsonify(dict(status=0, type=0, is_new=-1))
+                return jsonify(dict(status=0, type=0, is_new=-1, nickname=''))
             else:
                 login_user(user)
 
-                user_info = jsonify(dict(status=1, is_new=int(user.is_new), type=-1))
+                user_info = jsonify(dict(status=1, is_new=int(user.is_new), type=-1, nickname=user.nickname))
                 return user_info
         else:
-            user_info = jsonify(dict(status=0, type=1, is_new=-1))
+            user_info = jsonify(dict(status=0, type=1, is_new=-1, nickname=''))
             return user_info
     else:
         return 'hello'
