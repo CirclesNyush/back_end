@@ -13,6 +13,10 @@ class Users(UserMixin, db.Model):
     nickname = db.Column(db.VARCHAR(64))
     phone = db.Column(db.VARCHAR(18))
 
+    description = db.Column(db.VARCHAR(140), default=' ')
+
+    timestamp = db.Column(db.Integer)
+
     pwd = db.Column(db.VARCHAR(64))
     gender = db.Column(db.BOOLEAN())
     avatar = db.Column(db.VARCHAR(64))

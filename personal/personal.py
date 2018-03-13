@@ -45,12 +45,15 @@ def get_info():
     if request.method == 'POST':
         data = request.get_json(force=True)
         email = data['email']
-        user = Users.query.filter_by(cyphered_emai=email).first()
+        print(data)
+        user = Users.query.filter_by(cyphered_email=email).first()
         if user is not None:
-            json = dict(avatar=user.avatar, nickname=user.nickname,
-                        phone=user.phone, tags=user.tags)
-            return jsonify(dict(status=1, data=jsonify(json)))
-        return jsonify(dict(status=0, data=""))
+            json = dict(avatar=user.avatar, nickname=user.nickname, email=user.email,
+                        phone=user.phone, description=user.description)
+            return jsonify(dict(status=1, data=json))
+        json = dict(avatar='', nickname='',
+                    phone='', tags='')
+        return jsonify(dict(status=0, data=json))
 
 
 @personal.route('/updateinfo', methods=['POST'])
@@ -58,7 +61,7 @@ def update_info():
     if request.method == 'POST':
         data = request.get_json(force=True)
         email = data['email']
-        user = Users.query.filter_by(cyphered_emai=email).first()
+        user = Users.query.filter_by(cyphered_email=email).first()
         if user is not None:
             changes = data['data']
             for key, value in changes.items():

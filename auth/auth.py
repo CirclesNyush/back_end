@@ -6,6 +6,8 @@ from flask_login import login_user, logout_user, login_required
 
 from utli import send_mail
 
+import time
+
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -16,14 +18,15 @@ def login():
 
         if user is not None and user.pwd == data['pwd']:
             if not user.is_valid:
-                return jsonify(dict(status=0, type=0, is_new=-1, nickname=''))
+                return jsonify(dict(status=0, type=0, is_new=-1, nickname='', avatar=''))
             else:
                 login_user(user)
-
-                user_info = jsonify(dict(status=1, is_new=int(user.is_new), type=-1, nickname=user.nickname))
+                now = time.time()
+                user.timestamp = int(now)
+                user_info = jsonify(dict(status=1, is_new=int(user.is_new), type=-1, nickname=user.nickname, avatar=user.avatar))
                 return user_info
         else:
-            user_info = jsonify(dict(status=0, type=1, is_new=-1, nickname=''))
+            user_info = jsonify(dict(status=0, type=1, is_new=-1, nickname='', avatar=''))
             return user_info
     else:
         return 'hello'
@@ -77,6 +80,26 @@ def forget_pwd():
             return jsonify(dict(status=1, type=-1, is_new=-1))
         else:
             return jsonify(dict(status=0, type=-1, is_new=-1))
+
+
+@auth.route('/checksession', methods=['POST'])
+def check_session():
+    if request.method == 'POST':
+        data = request.get_json(force=True)
+
+        q = Users.query.filter_by(cyphered_email=data['email']).first()
+        if q is not None:
+            previous = q.timestamp
+            now = time.time()
+
+            interval = now - previous
+            print(interval, now, previous, q.timestamp)
+            if interval < 604800:
+                return jsonify(dict(status=1, avatar=q.avatar, nickname=q.nickname))
+            else:
+                return jsonify(dict(status=0, avatar='', nickname=''))
+        else:
+            return jsonify(dict(status=0, avatar='', nickname=''))
 
 
 @auth.route('/verify/<username>', methods=['GET'])
