@@ -15,7 +15,7 @@ class Users(UserMixin, db.Model):
 
     description = db.Column(db.VARCHAR(140), default=' ')
 
-    timestamp = db.Column(db.Integer)
+    timestamp = db.Column(db.Integer, default=0)
 
     pwd = db.Column(db.VARCHAR(64))
     gender = db.Column(db.BOOLEAN())

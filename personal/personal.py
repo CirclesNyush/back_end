@@ -60,13 +60,19 @@ def get_info():
 def update_info():
     if request.method == 'POST':
         data = request.get_json(force=True)
-        email = data['email']
-        user = Users.query.filter_by(cyphered_email=email).first()
+        data = data['data']
+        user = Users.query.filter_by(cyphered_email=data['email']).first()
         if user is not None:
-            changes = data['data']
-            for key, value in changes.items():
-                user[key] = value
+            print(data)
+            for key, value in data.items():
+                if value != "":
+                    if key == 'phone':
+                        user.phone = value
+                    elif key == 'nickname':
+                        user.nickname = value
+
+            print(user.phone)
             db.session.add(user)
             db.session.commit()
-            return jsonify(dict(status=0, data=""))
-        return jsonify(dict(status=0, data=""))
+            return jsonify(dict(status=1, data=""))
+        return jsonify(diict(status=0, data=""))

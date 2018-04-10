@@ -14,5 +14,7 @@ gen
 auth/__pycache__/
 models/__pycache__/
 
+/static/pic
+
 config.py
 utli/__pycache__/
