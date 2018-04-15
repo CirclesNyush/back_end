@@ -1,37 +1,30 @@
 from back_end import db
 import hashlib
+from datetime import datetime
 
 
-class Users(db.Model):
-    __tablename__ = 'Circles'
+class Circle(db.Model):
+    __tablename__ = 'Circle'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     title = db.Column(db.VARCHAR(64))
     content = db.Column(db.VARCHAR(140))
-    time = db.Column(db.DateTime, default=datetime.now())
-    is_valid = db.Column(db.BOOLEAN(), default=True)
-    tags = db.Column(db.PickleType)
+    time = db.Column(db.DateTime)
 
-    publisher = db.Column(db.VARCHAR(64))
-    follower = db.Column(db.VARCHAR(140))
+    publisher_id = db.Column(db.Integer)
 
-    def __init__(self, email, title, content, tags):
-        self.publisher = email
+    follower_id = db.Column(db.VARCHAR(64))
+
+    def __init__(self, p_id, title, content):
+        self.publisher = p_id
         self.title = title
         self.content = content
-        self.tags = tags
+        self.time = datetime.now()
+
+        self.follower_id = ""
 
     def __repr__(self):
         return '<Circles %r>' % self.email
 
     def get_email(self):
         return self.email
-
-    def is_authenticated(self):
-        return True
-
-    def is_active(self):
-        return True
-
-    def is_anonymous(self):
-        return False

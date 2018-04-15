@@ -33,8 +33,10 @@ def load_user(user_id):
 def init():
     from auth import auth
     from personal import personal
+    from circles import circles
     app.register_blueprint(blueprint=auth, url_prefix='/auth')
     app.register_blueprint(blueprint=personal, url_prefix='/personal')
+    app.register_blueprint(blueprint=circles, url_prefix='/circles')
 
 
 @app.route('/news', methods=['POST'])
