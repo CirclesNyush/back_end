@@ -16,7 +16,7 @@ class Circle(db.Model):
     follower_id = db.Column(db.VARCHAR(64))
 
     def __init__(self, p_id, title, content):
-        self.publisher = p_id
+        self.publisher_id = p_id
         self.title = title
         self.content = content
         self.time = datetime.now()
