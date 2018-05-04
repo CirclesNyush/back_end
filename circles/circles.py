@@ -14,9 +14,11 @@ def query_circles():
         index = data['eventId']
 
         if index < 0:
-            circles = Circle.query.order_by(desc(Circle.id)).limit(10).all()
+            circles = Circle.query.order_by(desc(Circle.id)).limit(5).all()
         else:
-            circles = Circle.query.filter(Circle.id > index).limit(10).all()
+            circles = Circle.query.order_by(desc(Circle.id)).filter(Circle.id < index).limit(5).all()
+            for c in circles:
+                print(c.id)
         send = dict(status=0, data=[])
         if circles is not None:
             send['status'] = 1
