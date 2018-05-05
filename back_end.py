@@ -42,8 +42,7 @@ def init():
 @app.route('/news', methods=['POST'])
 def news():
     if request.method == 'POST':
-        if request.get_json(force=True)['key'] == 'abc':
-            return jsonify(getData())
+        return jsonify(getData())
 
 
 @app.route('/test', methods=["GET"])

@@ -15,7 +15,7 @@ def getData():
 
     con = content.select("div .item-content-box")
     data['length'] = len(con)
-    item = dict()
+    item = []
     for i in range(len(con)):
         d = dict()
         d['title'] = con[i].find('h3').getText()
@@ -24,7 +24,7 @@ def getData():
                 d['detail'] = n.getText()
         d['link'] = con[i].find('a').attrs['href']
         d['img'] = img[i]
-        item[i] = d
+        item.append( d )
     data['item'] = item
 
     return data

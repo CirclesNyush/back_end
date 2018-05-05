@@ -5,6 +5,8 @@
 # IntelliJ project files
 .idea
 *.iml
+*.jpeg
+*.jpg
 out
 gen
 /__pycache__
